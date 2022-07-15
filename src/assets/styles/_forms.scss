@@ -1,0 +1,10 @@
+@import './variables';
+
+.manditory {
+  color: $error-color;
+}
+
+label.error {
+  color: $error-color;
+  font-weight: 400;
+}
