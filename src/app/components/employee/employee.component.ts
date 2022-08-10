@@ -15,6 +15,7 @@ export class EmployeeComponent implements OnInit {
     this.employee = new Employee();
   }
 
+  hadServices = false;
   employee: Employee;
   employeeList: Employee[] = [];
   phoneNumberPrefixList = [
@@ -28,7 +29,9 @@ export class EmployeeComponent implements OnInit {
   ]
 
   ngOnInit(): void {
+    // if (this.hadServices) {
     this.getAllEmployees();
+    // }
     $(() => {
       $('#phoneNumberPrefix').select2({
         placeholder: 'Select an option'
@@ -39,36 +42,65 @@ export class EmployeeComponent implements OnInit {
   public saveEmployee() {
     this.validateEmployee();
     if (!$('form[name="employeeForm"]').valid()) { return; }
-    this.employeeService.saveEmployee(this.employee).subscribe(() => {
+    if (this.hadServices) {
+      this.employeeService.saveEmployee(this.employee).subscribe(() => {
+        $('.modal').modal('hide');
+        this.getAllEmployees();
+      });
+    } else {
+      this.employee.id = this.employeeList.length + 1;
+      this.employeeList.push(this.employee);
       $('.modal').modal('hide');
-      this.getAllEmployees();
-    });
+    }
   }
 
   public getAllEmployees() {
     this.employeeService.getAllEmployees().subscribe((res: any) => {
       this.employeeList = res;
+    }, err => {
+      if (err.status === 504) {
+        this.hadServices = false;
+      }
     });
   }
 
   public getEmployee() {
-    this.employeeService.getEmployee(this.employee.id).subscribe((res: any) => {
-      this.employee = res;
-    });
+    if (this.hadServices) {
+      this.employeeService.getEmployee(this.employee.id).subscribe((res: any) => {
+        this.employee = res;
+      });
+    } else {
+
+    }
   }
 
   public updateEmployee() {
     this.validateEmployee();
     if (!$('form[name="employeeForm"]').valid()) { return; }
-    this.employeeService.updateEmployee(this.employee).subscribe(() => {
-      this.getAllEmployees();
-    });
+    if (this.hadServices) {
+      this.employeeService.updateEmployee(this.employee).subscribe(() => {
+        this.getAllEmployees();
+      });
+    } else {
+      const idx = this.employeeList.findIndex(e => e.id === this.employee.id);
+      if (idx !== -1) {
+        this.employeeList[idx] = this.employee;
+        $('.modal').modal('hide');
+      }
+    }
   }
 
   public deleteEmployee() {
-    this.employeeService.deleteEmployee(this.employee.id).subscribe(() => {
-      this.getAllEmployees();
-    });
+    if (this.hadServices) {
+      this.employeeService.deleteEmployee(this.employee.id).subscribe(() => {
+        this.getAllEmployees();
+      });
+    } else {
+      const idx = this.employeeList.findIndex(e => e.id === this.employee.id);
+      if (idx !== -1) {
+        this.employeeList.splice(idx, 1);
+      }
+    }
   }
 
   public add() {
@@ -95,16 +127,16 @@ export class EmployeeComponent implements OnInit {
     const namePattern = /^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$/;
     const emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-    $.validator.addMethod('name', (value: string, element: any, arg: any) => {
-      const str = value.trim();
-      const regex = new RegExp(namePattern);
+    // $.validator.addMethod('name', (value: string, element: any, arg: any) => {
+    //   const str = value.trim();
+    //   const regex = new RegExp(namePattern);
 
-      if (regex.test(str)) {
-        return true;
-      } else {
-        return false;
-      }
-    }, 'Enter a valid name');
+    //   if (regex.test(str)) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }, 'Enter a valid name');
 
 
     /** email id validator **/
@@ -124,7 +156,7 @@ export class EmployeeComponent implements OnInit {
       rules: {
         firstName: {
           required: true,
-          name: true,
+          // name: true,
         },
         // lastName: {
         //   required: false,
@@ -158,7 +190,6 @@ export class EmployeeComponent implements OnInit {
         },
         emailId: {
           required: "Email id is required!",
-          emailId: true
         },
         gender: {
           required: "Gender is required!",

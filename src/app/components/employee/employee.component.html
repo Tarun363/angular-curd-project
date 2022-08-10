@@ -124,7 +124,8 @@
                     </div>
                 </div>
                 <div class=" modal-footer">
-                    <button class="btn btn-primary" (click)="saveEmployee()">Save</button>
+                    <button class="btn btn-primary" (click)="saveEmployee()" *ngIf="!employee?.id">Add</button>
+                    <button class="btn btn-primary" (click)="updateEmployee()" *ngIf="employee?.id">Edit</button>
                     <button class="btn btn-secondary" data-dismiss="modal" (click)="resetForm()">Cancel</button>
                 </div>
             </form>
