@@ -1,6 +1,10 @@
-# AngularCurdProject
+# Angular Curd Project with Spring Boot as backend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.5.
+
+## Project dependency
+
+You need to download this [spring boot](https://github.com/Tarun363/Spring-boot-curd-project) project to perform curd operation.
 
 ## Development server
 
