@@ -4,7 +4,10 @@ export class Employee {
     firstName!: string;
     lastName!: string;
     emailId!: string;
+    gender!: string;
+    phoneNumberPrefix!: string;
     phoneNumber!: string;
     department!: string;
+    about!: string;
 
 }

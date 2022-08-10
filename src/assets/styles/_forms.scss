@@ -5,6 +5,25 @@
 }
 
 label.error {
+  width: 100%;
   color: $error-color;
   font-weight: 400;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.select2 {
+  height: $select2-height;
+
+  .select2-selection {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .select2-selection__arrow {
+    height: $select2-height !important;
+  }
 }

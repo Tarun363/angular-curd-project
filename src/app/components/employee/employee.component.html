@@ -74,12 +74,37 @@
                                 placeholder="Enter Email Id" required [(ngModel)]="employee.emailId">
                         </div>
                         <div class="form-group col-12">
+                            <label for="gender" class="form-label">Gender
+                                <span class="manditory">*</span>
+                            </label>
+                            <div class="genderDiv">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="male"
+                                        required [(ngModel)]="employee.gender">
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gender" id="female"
+                                        value="female" required [(ngModel)]="employee.gender">
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-12">
                             <label for="phoneNumber" class="form-label">Phone Number
                                 <span class="manditory">*</span>
                             </label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                                placeholder="Enter Phone Number" minlength="10" maxlength="10" required
-                                [(ngModel)]="employee.phoneNumber">
+                            <div class="d-flex align-items-center phoneNumberDiv">
+                                <select name="phoneNumberPrefix" id="phoneNumberPrefix" class="form-control" required
+                                    [(ngModel)]="employee.phoneNumberPrefix">
+                                    <option [value]="opt.value" *ngFor=" let opt of phoneNumberPrefixList">{{opt.value}}
+                                    </option>
+                                </select>
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                    placeholder="Enter Phone Number" minlength="10" maxlength="10" required
+                                    [(ngModel)]="employee.phoneNumber">
+                            </div>
                         </div>
                         <div class="form-group col-12">
                             <label for="department" class="form-label">Department
@@ -88,11 +113,19 @@
                             <input type="text" class="form-control" id="department" name="department"
                                 placeholder="Enter Department" required [(ngModel)]="employee.department">
                         </div>
+                        <div class="form-group col-12">
+                            <label for="about" class="form-label">About
+                                <span class="manditory">*</span>
+                            </label>
+                            <textarea type="text" class="form-control" id="about" name="about" rows="3"
+                                placeholder="Enter about..." required [(ngModel)]="employee.about">
+                            </textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class=" modal-footer">
                     <button class="btn btn-primary" (click)="saveEmployee()">Save</button>
-                    <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-secondary" data-dismiss="modal" (click)="resetForm()">Cancel</button>
                 </div>
             </form>
         </div>
